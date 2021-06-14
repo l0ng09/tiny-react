@@ -30,9 +30,7 @@ const modifyDOM = (
 		<h3>(观察: 这个将会被改变)</h3>
 		{2 == 1 && <div>如果2和1相等渲染当前内容</div>}
 		{2 == 2 && <div>2</div>}
-		<h1>这是一段被修改后的内容</h1>
 		<button onClick={() => alert("你好！！！！")}>点击我</button>
-		<h3>这个将会被删除</h3>
 		2, 3
 		<input type="text" value="13" />
 	</div>
@@ -61,8 +59,26 @@ function Demo() {
 }
 
 class Alert extends TinyReact.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			title: "default title",
+		}
+		this.handleClick = this.handleClick.bind(this)
+	}
+	handleClick(){
+		this.setState({
+			title:'modify title'
+		})
+	}
 	render() {
-		return <div>Hello Class Component</div>
+		return (
+			<div>
+				<h2>{this.state.title}</h2>
+				<p>Hello Class Component</p>
+				<button onClick={this.handleClick}>修改标题</button>
+			</div>
+		)
 	}
 }
 
@@ -77,8 +93,9 @@ class Other extends TinyReact.Component {
 	}
 }
 
-TinyReact.render(virtualDOM, root)
+TinyReact.render(<Other name="张三"  age="20"/>, root)
 
 setTimeout(() => {
-	TinyReact.render(modifyDOM, root)
+	TinyReact.render(<Other name="李四"  age="50"/>, root)
+	// TinyReact.render(<Alert />, root)
 }, 2000);
