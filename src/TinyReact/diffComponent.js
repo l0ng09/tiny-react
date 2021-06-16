@@ -7,8 +7,6 @@ export default function diffComponent(
 	oldDOM,
 	container
 ) {
-	console.log("virtualDOM: ", virtualDOM)
-	console.log("oldComponent: ", oldComponent)
 	if (isSameComponent(virtualDOM, oldComponent)) {
 		// 同一个组件
 		updateComponent(virtualDOM, oldComponent, oldDOM, container)
