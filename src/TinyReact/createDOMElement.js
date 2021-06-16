@@ -1,8 +1,8 @@
-import updateNodeElement from './updateNodeElement';
-import mountElement from './mountElement';
+import updateNodeElement from "./updateNodeElement"
+import mountElement from "./mountElement"
 
-export default function createDOMElement(virtualDOM){
-  const { type, props, children } = virtualDOM
+export default function createDOMElement(virtualDOM) {
+	const { type, props, children = [] } = virtualDOM
 	let newElement = null
 	// 创建父节点
 	if (type === "text") {
@@ -21,9 +21,9 @@ export default function createDOMElement(virtualDOM){
 	})
 
 	// 处理 ref 属性
-	if(virtualDOM.props && virtualDOM.props.ref){
+	if (virtualDOM.props && virtualDOM.props.ref) {
 		virtualDOM.props.ref(newElement)
 	}
 
-  return newElement
+	return newElement
 }

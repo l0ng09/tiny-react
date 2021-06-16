@@ -35,10 +35,35 @@ export default function diff(virtualDOM, container, oldDOM) {
 			updateNodeElement(oldDOM, virtualDOM, oldVirtualDOM)
 		}
 
-		// 这里如要递归对比更新子节点
-		virtualDOM.children.forEach((child, index) => {
-			diff(child, oldDOM, oldDOM.childNodes[index])
-		})
+		// 1. 将所有的有key的子节点放到一个对象中保存起来,做一个key 的地图
+		const keyElement = {}
+		for (let i = 0, len = oldDOM.childNodes.length; i < len; i++) {
+			const domElement = oldDOM.childNodes[i]
+			// 只有元素节点才需要进行 key 属性的判断
+			if (domElement.nodeType === 1) {
+				const key = domElement.getAttribute("key")
+				if (key) keyElement[key] = domElement
+			}
+		}
+
+		// 看看是否有 key 属性, 根据是否有 key 属性决定怎么更新子节点
+		const hasNoKey = Object.keys(keyElement).length === 0
+
+		if (hasNoKey) {
+			// 这里如要递归对比更新子节点
+			virtualDOM.children.forEach((child, index) => {
+				diff(child, oldDOM, oldDOM.childNodes[index])
+			})
+		} else {
+			// 2. 循环 virtualDOM 的子节点，获取 key 属性
+			virtualDOM.children.forEach((child, index) => {
+				const key = child.props.key
+				// 3. 看看当前 index 元素是不是我们希望的元素
+				if (keyElement[key] && keyElement !== oldDOM.childNodes[index]) {
+					oldDOM.insertBefore(keyElement[key], oldDOM.childNodes[index])
+				}
+			})
+		}
 
 		// 删除旧节点
 		// 获取旧节点
