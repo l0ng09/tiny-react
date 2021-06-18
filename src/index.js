@@ -167,7 +167,7 @@ class KeyDemo extends TinyReact.Component {
           {this.state.persons.map(person => (
             <li key={person.id}>
               {person.name}
-              <DemoRef />
+              {/* <DemoRef /> */}
             </li>
           ))}
         </ul>
